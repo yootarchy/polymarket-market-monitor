@@ -40,6 +40,7 @@ export interface Market {
   liquidityNum: number; // Liquidity as number
   volumeNum: number; // Volume as number
   description?: string; // Detailed market description
+  events?: Array<{ slug: string }>; // Parent event data
 }
 
 /**
@@ -195,10 +196,33 @@ export function sortByVolume(markets: Market[]): Market[] {
 /**
  * Get active markets only
  * 
- * Filters out closed/resolved markets.
+ * Filters out closed/resolved markets and old markets.
+ * Only returns markets that:
+ * - Are marked as active
+ * - Are not closed
+ * - Have an end date in the future OR within the last 30 days
+ * - Have valid price data
  */
 export function getActiveMarkets(markets: Market[]): Market[] {
-  return markets.filter((market) => market.active && !market.closed);
+  const now = new Date().getTime();
+  const thirtyDaysAgo = now - (30 * 24 * 60 * 60 * 1000);
+  
+  return markets.filter((market) => {
+    // Must be marked active and not closed
+    if (!market.active || market.closed) return false;
+    
+    // Must have an end date
+    if (!market.endDate) return false;
+    
+    // End date must be recent or in the future
+    const endTime = new Date(market.endDate).getTime();
+    if (endTime < thirtyDaysAgo) return false;
+    
+    // Must have valid price data
+    if (!market.outcomePrices) return false;
+    
+    return true;
+  });
 }
 
 /**

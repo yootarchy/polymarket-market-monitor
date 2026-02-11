@@ -43,7 +43,9 @@ export function MarketCard({ market }: MarketCardProps) {
   const isYesFavored = yesPrice > 0.5;
   
   // Polymarket URL format
-  const marketUrl = `https://polymarket.com/event/${market.slug}`;
+  // Try to use event slug if available, fall back to market slug
+  const eventSlug = market.events?.[0]?.slug || market.slug;
+  const marketUrl = `https://polymarket.com/event/${eventSlug}`;
   
   return (
     <a
