@@ -2,9 +2,12 @@
 
 A real-time prediction market monitoring dashboard built with Next.js 14, TypeScript, and Polymarket's Gamma API. This template demonstrates production-ready patterns for building developer tools and integrations with Polymarket.
 
-![Dashboard Preview](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)
-![TailwindCSS](https://img.shields.io/badge/Tailwind-3-38bdf8?style=for-the-badge&logo=tailwind-css)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)
+![TailwindCSS](https://img.shields.io/badge/Tailwind-3-38bdf8?style=flat-square&logo=tailwind-css)
+
+> 🎓 **Educational Template**: This is a learning resource and starter template for developers building on Polymarket. Perfect for DevRel portfolios and understanding modern React patterns with real-world APIs.
 
 ## 🎯 What This Template Teaches
 

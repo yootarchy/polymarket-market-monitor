@@ -118,44 +118,54 @@ export async function fetchMarket(slug: string): Promise<Market> {
 }
 
 /**
- * Filter markets by category
- * 
- * Categories are loosely defined in the API. Common categories include:
- * - "Politics" / "US-current-affairs"
- * - "Crypto"
- * - "Sports"
- * - "Tech"
- * - "Pop-Culture"
- * - "Coronavirus"
- * 
- * Note: Category naming is inconsistent in the API data.
+ * Sort markets by different criteria
  */
-export function filterByCategory(
+export function sortMarkets(
   markets: Market[],
-  category: string
+  sortBy: "trending" | "ending-soon" | "long-term" | "new" | "all"
 ): Market[] {
-  if (category === "All") return markets;
+  const now = new Date().getTime();
+  const oneDayMs = 24 * 60 * 60 * 1000;
   
-  // Normalize category for matching
-  const normalizedCategory = category.toLowerCase();
-  
-  return markets.filter((market) => {
-    // Some markets don't have a category field - skip them
-    if (!market.category) return false;
-    
-    const marketCategory = market.category.toLowerCase();
-    
-    // Handle category variations
-    if (category === "Politics") {
-      return (
-        marketCategory.includes("politics") ||
-        marketCategory.includes("us-current-affairs") ||
-        marketCategory.includes("election")
-      );
-    }
-    
-    return marketCategory.includes(normalizedCategory);
-  });
+  switch (sortBy) {
+    case "all":
+      return sortByVolume(markets);
+      
+    case "trending":
+      // High 24hr volume
+      return [...markets].sort((a, b) => b.volume24hr - a.volume24hr);
+      
+    case "ending-soon":
+      // Markets ending within 7 days, sorted by end date
+      return markets
+        .filter((market) => {
+          const endTime = new Date(market.endDate).getTime();
+          const daysUntilEnd = (endTime - now) / oneDayMs;
+          return daysUntilEnd > 0 && daysUntilEnd <= 7;
+        })
+        .sort((a, b) => {
+          return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
+        });
+      
+    case "long-term":
+      // Markets ending in 30+ days
+      return markets
+        .filter((market) => {
+          const endTime = new Date(market.endDate).getTime();
+          const daysUntilEnd = (endTime - now) / oneDayMs;
+          return daysUntilEnd >= 30;
+        })
+        .sort((a, b) => b.volumeNum - a.volumeNum);
+      
+    case "new":
+      // Recently created (if we had createdAt, but we'll use end date as proxy)
+      return [...markets].sort((a, b) => {
+        return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
+      });
+      
+    default:
+      return markets;
+  }
 }
 
 /**

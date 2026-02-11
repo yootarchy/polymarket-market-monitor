@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   fetchMarkets,
   getTopMarkets,
-  filterByCategory,
+  sortMarkets,
   searchMarkets,
 } from "@/lib/api";
 import { MarketCard } from "./market-card";
@@ -15,19 +15,19 @@ import { Search, RefreshCw, AlertCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 /**
- * Market Categories
+ * Market Sort Options
  * 
- * Common categories found in Polymarket markets.
- * Note: API categories are inconsistent, so we normalize them.
+ * Different ways to sort/filter markets for discovery
  */
-const CATEGORIES = [
-  "All",
-  "Politics",
-  "Crypto",
-  "Sports",
-  "Tech",
-  "Pop-Culture",
+const SORT_OPTIONS = [
+  { value: "all", label: "All" },
+  { value: "trending", label: "Trending" },
+  { value: "ending-soon", label: "Ending Soon" },
+  { value: "long-term", label: "Long-Term" },
+  { value: "new", label: "New" },
 ] as const;
+
+type SortOption = typeof SORT_OPTIONS[number]["value"];
 
 /**
  * Market Dashboard Component
@@ -41,7 +41,7 @@ const CATEGORIES = [
  * - Responsive grid layout
  */
 export function MarketDashboard() {
-  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [selectedSort, setSelectedSort] = useState<SortOption>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   /**
@@ -78,7 +78,7 @@ export function MarketDashboard() {
    * 
    * Processing pipeline:
    * 1. Get top markets by volume (most active)
-   * 2. Filter by selected category
+   * 2. Sort by selected criteria
    * 3. Filter by search query
    * 
    * useMemo: Recalculate only when dependencies change
@@ -87,14 +87,14 @@ export function MarketDashboard() {
     // Start with top 100 markets by volume
     let processed = getTopMarkets(markets, 100);
     
-    // Apply category filter
-    processed = filterByCategory(processed, selectedCategory);
+    // Apply sorting
+    processed = sortMarkets(processed, selectedSort);
     
     // Apply search filter
     processed = searchMarkets(processed, searchQuery);
     
     return processed;
-  }, [markets, selectedCategory, searchQuery]);
+  }, [markets, selectedSort, searchQuery]);
 
   /**
    * Format last update time
@@ -163,17 +163,17 @@ export function MarketDashboard() {
           />
         </div>
 
-        {/* Category Tabs */}
+        {/* Sort Tabs */}
         <Tabs
-          value={selectedCategory}
-          onValueChange={setSelectedCategory}
+          value={selectedSort}
+          onValueChange={(value) => setSelectedSort(value as SortOption)}
           className="w-full"
         >
           <div className="flex items-center justify-between flex-wrap gap-4">
             <TabsList className="flex-wrap h-auto">
-              {CATEGORIES.map((category) => (
-                <TabsTrigger key={category} value={category}>
-                  {category}
+              {SORT_OPTIONS.map((option) => (
+                <TabsTrigger key={option.value} value={option.value}>
+                  {option.label}
                 </TabsTrigger>
               ))}
             </TabsList>
