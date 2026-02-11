@@ -140,6 +140,9 @@ export function filterByCategory(
   const normalizedCategory = category.toLowerCase();
   
   return markets.filter((market) => {
+    // Some markets don't have a category field - skip them
+    if (!market.category) return false;
+    
     const marketCategory = market.category.toLowerCase();
     
     // Handle category variations
