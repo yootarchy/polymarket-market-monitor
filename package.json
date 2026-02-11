@@ -2,7 +2,22 @@
   "name": "polymarket-market-monitor",
   "version": "1.0.0",
   "description": "A real-time market monitor dashboard for Polymarket using Gamma API",
-  "private": true,
+  "author": "Yootarchy",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yootarchy/polymarket-market-monitor"
+  },
+  "keywords": [
+    "polymarket",
+    "prediction-markets",
+    "gamma-api",
+    "nextjs",
+    "typescript",
+    "shadcn-ui",
+    "tanstack-query",
+    "dashboard"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
