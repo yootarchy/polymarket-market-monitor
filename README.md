@@ -361,6 +361,41 @@ This template is a starting point. Here are ideas to extend it:
 - [ ] User wallet integration (view positions)
 - [ ] Trading interface (buy/sell shares)
 
+## 🐛 Troubleshooting
+
+### Markets not loading?
+- Check your internet connection
+- Verify the Gamma API is accessible: `curl https://gamma-api.polymarket.com/markets?limit=1`
+- Check the browser console for error messages
+
+### Slow performance?
+- Reduce the number of markets displayed (default: 100)
+- Increase the refresh interval (default: 30 seconds)
+- Check your browser's memory usage
+
+### CORS errors?
+- This template uses a Next.js API route (`/api/markets`) to proxy requests and avoid CORS issues
+- If you see CORS errors, ensure the API route is working correctly
+
+## 📖 Further Reading
+
+### Want to dive deeper?
+- **Blog Post**: [Building a Polymarket Market Monitor](https://yootarchy.vercel.app/blog/building-polymarket-scanner) - Detailed walkthrough
+- **Resources**: [Awesome Polymarket](https://yootarchy.vercel.app/resources) - Curated list of tools and SDKs
+- **More Experiments**: [Yootarchy Experiments](https://yootarchy.vercel.app/experiments) - Other starter templates
+
+### Building something more advanced?
+- Check out [py-clob-client](https://github.com/Polymarket/py-clob-client) for trading
+- See [poly-maker](https://github.com/warproxxx/poly-maker) for market making
+- Read the [official docs](https://docs.polymarket.com) for comprehensive guides
+
+## 💬 Community & Support
+
+- **Issues**: Found a bug? [Open an issue](https://github.com/yootarchy/polymarket-market-monitor/issues)
+- **Discussions**: Questions? Use [GitHub Discussions](https://github.com/yootarchy/polymarket-market-monitor/discussions)
+- **Twitter**: Follow [@yoot_hfact](https://x.com/yoot_hfact) for updates
+- **Polymarket Discord**: Join the [official Discord](https://discord.gg/polymarket)
+
 ## 📄 License
 
 MIT License - feel free to use this template for any project.
@@ -375,4 +410,12 @@ MIT License - feel free to use this template for any project.
 
 **Built with ❤️ for the Polymarket developer community**
 
-Questions? Open an issue or reach out to the Polymarket team!
+Questions? Open an issue or reach out on [Twitter](https://x.com/yoot_hfact)!
+
+---
+
+### 📸 Preview
+
+![Market Monitor Dashboard](https://raw.githubusercontent.com/yootarchy/polymarket-market-monitor/main/public/preview.png)
+
+*Real-time market monitoring with search, filters, and auto-refresh*
