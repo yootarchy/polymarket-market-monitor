@@ -219,17 +219,17 @@ const { data, isLoading, isError, refetch } = useQuery({
 - Request deduplication
 - Built-in retry logic
 
-### 3. Filtering & Search
+### 3. Sorting & Search
 
-The dashboard implements efficient client-side filtering:
+The dashboard implements efficient client-side sorting and search:
 
 ```typescript
 const filteredMarkets = useMemo(() => {
   let processed = getTopMarkets(markets, 100);
-  processed = filterByCategory(processed, selectedCategory);
+  processed = sortMarkets(processed, selectedSort); // All, Trending, Ending Soon, etc.
   processed = searchMarkets(processed, searchQuery);
   return processed;
-}, [markets, selectedCategory, searchQuery]);
+}, [markets, selectedSort, searchQuery]);
 ```
 
 **Optimized with `useMemo`** to avoid unnecessary recalculations.
@@ -248,19 +248,19 @@ const yesPercentage = Math.round(prices[0] * 100);
 
 ## 🎨 Customization Guide
 
-### Adding New Categories
+### Changing Sort Options
 
 Edit `components/market-dashboard.tsx`:
 
 ```typescript
-const CATEGORIES = [
-  "All",
-  "Politics",
-  "Crypto",
-  "Sports",
-  "Tech",
-  "Your-Category", // Add here
-];
+const SORT_OPTIONS = [
+  { value: "all", label: "All" },
+  { value: "trending", label: "Trending" },
+  { value: "ending-soon", label: "Ending Soon" },
+  { value: "long-term", label: "Long-Term" },
+  { value: "new", label: "New" },
+  // Add custom sorting here
+] as const;
 ```
 
 ### Adjusting Refresh Rate
